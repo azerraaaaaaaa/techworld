@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TECHVERSE — Le Monde de l'Informatique</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5900809332426047"
+     crossorigin="anonymous"></script>
+<style>
+  :root {
+    --bg: #050810;
+    --surface: #0d1117;
+    --card: #111827;
+    --accent: #00f5a0;
+    --accent2: #00d9f5;
+    --accent3: #f500a0;
+    --text: #e8eaf0;
+    --muted: #6b7280;
+    --border: rgba(255,255,255,0.07);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    overflow-x: hidden;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(5, 8, 16, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+  }
+
+  .logo span { color: var(--text); }
+
+  nav ul {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  nav ul a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  nav ul a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 4rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 245, 160, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 245, 160, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridMove 20s linear infinite;
+  }
+
+  @keyframes gridMove {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(60px); }
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,245,160,0.08) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.2s;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.4s;
+  }
+
+  .hero h1 .line2 {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(0,245,160,0.4);
+  }
+
+  .hero h1 .line3 { color: var(--accent); }
+
+  .hero-sub {
+    margin-top: 2rem;
+    max-width: 500px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    line-height: 1.8;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.6s;
+  }
+
+  .hero-btns {
+    margin-top: 3rem;
+    display: flex;
+    gap: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.8s;
+  }
+
+  .btn {
+    padding: 0.9rem 2rem;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    font-weight: 500;
+  }
+
+  .btn-primary:hover {
+    background: #00d4a0;
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(0,245,160,0.3);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .hero-stats {
+    position: absolute;
+    right: 4rem;
+    bottom: 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 1s;
+  }
+
+  .stat {
+    text-align: right;
+  }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* SECTIONS */
+  section { padding: 6rem 4rem; }
+
+  .section-tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .section-sub {
+    color: var(--muted);
+    font-size: 0.85rem;
+    line-height: 1.8;
+    max-width: 500px;
+    margin-bottom: 3rem;
+  }
+
+  /* DOMAINES */
+  #domaines { background: var(--surface); }
+
+  .domaines-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .domaine-card {
+    background: var(--card);
+    padding: 2.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .domaine-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 0;
+    background: var(--card-accent, var(--accent));
+    transition: height 0.3s;
+  }
+
+  .domaine-card:hover::before { height: 100%; }
+
+  .domaine-card:hover {
+    background: #161e2e;
+    transform: translateX(4px);
+  }
+
+  .domaine-icon {
+    font-size: 2rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .domaine-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+  }
+
+  .domaine-card p {
+    color: var(--muted);
+    font-size: 0.78rem;
+    line-height: 1.8;
+  }
+
+  .domaine-tag {
+    display: inline-block;
+    margin-top: 1.2rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 2px;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: rgba(0,245,160,0.08);
+    color: var(--accent);
+  }
+
+  /* LANGAGES */
+  #langages {}
+
+  .langages-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 3rem;
+  }
+
+  .lang-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .lang-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.8rem;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .lang-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, var(--lang-color, rgba(0,245,160,0.1)), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .lang-card:hover::after { opacity: 1; }
+  .lang-card:hover { border-color: var(--lang-color, var(--accent)); transform: translateY(-4px); }
+
+  .lang-logo {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .lang-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+
+  .lang-type {
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .lang-bar-wrap {
+    height: 3px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .lang-bar {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--lang-color, var(--accent));
+    animation: barGrow 1.5s ease forwards;
+    transform-origin: left;
+  }
+
+  @keyframes barGrow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+
+  .lang-pop {
+    margin-top: 0.6rem;
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+
+  /* METIERS */
+  #metiers { background: var(--surface); }
+
+  .metiers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .metier-item {
+    background: var(--card);
+    padding: 2rem 2.5rem;
+    display: grid;
+    grid-template-columns: 60px 1fr auto;
+    align-items: center;
+    gap: 2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .metier-item:hover {
+    background: #161e2e;
+    padding-left: 3rem;
+  }
+
+  .metier-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: rgba(0,245,160,0.2);
+  }
+
+  .metier-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+
+  .metier-desc {
+    font-size: 0.75rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .metier-salary {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .salary-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .salary-label {
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* CONCEPTS */
+  #concepts {}
+
+  .concepts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .concept-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2rem;
+    transition: all 0.3s;
+  }
+
+  .concept-card:hover {
+    border-color: rgba(0,245,160,0.3);
+    box-shadow: 0 0 30px rgba(0,245,160,0.05);
+  }
+
+  .concept-card.large {
+    grid-column: span 2;
+  }
+
+  .concept-icon { font-size: 1.8rem; margin-bottom: 1.2rem; }
+
+  .concept-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    color: var(--accent2);
+  }
+
+  .concept-card p {
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .concept-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1.2rem;
+  }
+
+  .tag {
+    padding: 0.25rem 0.7rem;
+    border-radius: 2px;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    background: rgba(0,217,245,0.08);
+    color: var(--accent2);
+    border: 1px solid rgba(0,217,245,0.15);
+  }
+
+  /* OUTILS */
+  #outils { background: var(--surface); }
+
+  .outils-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+
+  .outil-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .outil-card:hover {
+    border-color: var(--accent3);
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(245,0,160,0.1);
+  }
+
+  .outil-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+
+  .outil-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+
+  .outil-cat {
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* TIMELINE */
+  #histoire {}
+
+  .timeline {
+    position: relative;
+    padding-left: 3rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0.5rem;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  .timeline-item:nth-child(1) { animation-delay: 0.1s; }
+  .timeline-item:nth-child(2) { animation-delay: 0.2s; }
+  .timeline-item:nth-child(3) { animation-delay: 0.3s; }
+  .timeline-item:nth-child(4) { animation-delay: 0.4s; }
+  .timeline-item:nth-child(5) { animation-delay: 0.5s; }
+  .timeline-item:nth-child(6) { animation-delay: 0.6s; }
+  .timeline-item:nth-child(7) { animation-delay: 0.7s; }
+
+  .timeline-dot {
+    position: absolute;
+    left: -2.7rem;
+    top: 0.3rem;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+  }
+
+  .timeline-year {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.4rem;
+  }
+
+  .timeline-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+
+  .timeline-text {
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 600px;
+  }
+
+  /* GLOSSAIRE */
+  #glossaire { background: var(--surface); }
+
+  .glossaire-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+
+  .glossaire-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.5rem;
+    transition: border-color 0.3s;
+  }
+
+  .glossaire-item:hover { border-color: rgba(0,245,160,0.2); }
+
+  .glossaire-term {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .glossaire-def {
+    font-size: 0.77rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--accent);
+  }
+
+  .footer-text {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  /* CURSOR */
+  .cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background: var(--accent);
+    animation: blink 1s step-end infinite;
+    vertical-align: text-bottom;
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    nav ul { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .hero { padding: 7rem 1.5rem 4rem; }
+    .hero-stats { display: none; }
+    .concepts-grid { grid-template-columns: 1fr; }
+    .concept-card.large { grid-column: span 1; }
+    .metier-item { grid-template-columns: 40px 1fr; }
+    .metier-salary { display: none; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">TECH<span>VERSE</span></div>
+  <ul>
+    <li><a href="#domaines">Domaines</a></li>
+    <li><a href="#langages">Langages</a></li>
+    <li><a href="#metiers">Métiers</a></li>
+    <li><a href="#concepts">Concepts</a></li>
+    <li><a href="#outils">Outils</a></li>
+    <li><a href="#histoire">Histoire</a></li>
+    <li><a href="#glossaire">Glossaire</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-tag">// Le monde de l'informatique — 2024</div>
+  <h1>
+    EXPLORER<br>
+    <span class="line2">LE MONDE</span><br>
+    <span class="line3">DIGITAL</span>
+  </h1>
+  <p class="hero-sub">De l'algorithme au cloud, du terminal au machine learning — tout ce que tu dois savoir sur l'informatique moderne.<span class="cursor"></span></p>
+  <div class="hero-btns">
+    <a href="#domaines" class="btn btn-primary">Commencer</a>
+    <a href="#glossaire" class="btn btn-ghost">Glossaire</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">700+</div>
+      <div class="stat-label">Langages existants</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">28M</div>
+      <div class="stat-label">Développeurs monde</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Possibilités</div>
+    </div>
+  </div>
+</section>
+
+<!-- DOMAINES -->
+<section id="domaines">
+  <div class="section-tag">// 01 — domaines</div>
+  <h2 class="section-title">Les grands<br>domaines</h2>
+  <p class="section-sub">L'informatique couvre un spectre immense de disciplines, chacune avec ses propres défis et opportunités.</p>
+  <div class="domaines-grid">
+    <div class="domaine-card" style="--card-accent: #00f5a0">
+      <div class="domaine-icon">🧠</div>
+      <h3>Intelligence Artificielle</h3>
+      <p>Machine learning, deep learning, réseaux de neurones. L'IA transforme chaque industrie, de la médecine à la finance.</p>
+      <span class="domaine-tag">En plein essor</span>
+    </div>
+    <div class="domaine-card" style="--card-accent: #00d9f5">
+      <div class="domaine-icon">🌐</div>
+      <h3>Développement Web</h3>
+      <p>Frontend, backend, fullstack. Créer des sites et applications web accessibles depuis n'importe quel navigateur.</p>
+      <span class="domaine-tag" style="background:rgba(0,217,245,0.08);color:var(--accent2)">Très demandé</span>
+    </div>
+    <div class="domaine-card" style="--card-accent: #f500a0">
+      <div class="domaine-icon">🔐</div>
+      <h3>Cybersécurité</h3>
+      <p>Protéger les systèmes, réseaux et données contre les attaques. Pentesting, cryptographie, forensics.</p>
+      <span class="domaine-tag" style="background:rgba(245,0,160,0.08);color:var(--accent3)">Critique</span>
+    </div>
+    <div class="domaine-card" style="--card-accent: #ffd700">
+      <div class="domaine-icon">☁️</div>
+      <h3>Cloud Computing</h3>
+      <p>AWS, Azure, GCP. Héberger, scaler et gérer des applications à l'échelle mondiale sans infrastructure physique.</p>
+      <span class="domaine-tag" style="background:rgba(255,215,0,0.08);color:#ffd700">Incontournable</span>
+    </div>
+    <div class="domaine-card" style="--card-accent: #a855f7">
+      <div class="domaine-icon">📱</div>
+      <h3>Développement Mobile</h3>
+      <p>iOS, Android, React Native, Flutter. Créer des applications pour les milliards de smartphones dans le monde.</p>
+      <span class="domaine-tag" style="background:rgba(168,85,247,0.08);color:#a855f7">Populaire</span>
+    </div>
+    <div class="domaine-card" style="--card-accent: #f97316">
+      <div class="domaine-icon">🗄️</div>
+      <h3>Data Science</h3>
+      <p>Analyser et visualiser de grandes quantités de données pour en extraire des insights et prendre de meilleures décisions.</p>
+      <span class="domaine-tag" style="background:rgba(249,115,22,0.08);color:#f97316">Lucratif</span>
+    </div>
+  </div>
+</section>
+
+<!-- LANGAGES -->
+<section id="langages">
+  <div class="section-tag">// 02 — langages</div>
+  <div class="langages-header">
+    <div>
+      <h2 class="section-title">Langages de<br>programmation</h2>
+      <p class="section-sub">Les outils fondamentaux du développeur — chacun avec sa philosophie et ses cas d'usage.</p>
+    </div>
+  </div>
+  <div class="lang-grid">
+    <div class="lang-card" style="--lang-color: #f7df1e20; border-color: #f7df1e30">
+      <div class="lang-logo">🟨</div>
+      <div class="lang-name">JavaScript</div>
+      <div class="lang-type">Web / Full-stack</div>
+      <div class="lang-bar-wrap"><div class="lang-bar" style="width:95%;background:#f7df1e"></div></div>
+      <div class="lang-pop" style="color:#f7df1e">★ #1 le plus utilisé</div>
+    </div>
+    <div class="lang-card" style="--lang-color: #3776ab20; border-color: #3776ab30">
+      <div class="lang-logo">🐍</div>
+      <div class="lang-name">Python</div>
+      <div class="lang-type">IA / Data / Script</div>
+      <div class="lang-bar-wrap"><div class="lang-bar" style="width:90%;background:#3776ab"></div></div>
+      <div class="lang-pop" style="color:#3776ab">★ #1 pour l'IA</div>
+    </div>
+    <div class="lang-card" style="--lang-color: #00add820; border-color: #00add830">
+      <div class="lang-logo">🔵</div>
+      <div class="lang-name">Go</div>
+      <div class="lang-type">Backend / Cloud</div>
+      <div class="lang-bar-wrap"><div class="lang-bar" style="width:70%;background:#00add8"></div></div>
+      <div class="lang-pop" style="color:#00add8">★ Performant</div>
+    </div>
+    <div class="lang-card" style="--lang-color: #b07219_20; border-color: #b0721930">
+      <div class="lang-logo">☕</div>
+      <div class="lang-name">Java</div>
+      <div class="lang-type">Entreprise / Android</div>
+      <div class="lang-bar-wrap"><div class="lang-bar" style="width:80%;background:#b07219"></div></div>
+      <div class="lang-pop" style="color:#b07219">★ Robuste</div>
+    </div>
+    <div class="lang-card" style="--lang-color: #a97bff20; border-color: #a97bff30">
+      <div class="lang-logo">🦀</div>
+      <div class="lang-name">Rust</div>
+      <div class="lang-type">Système / Perf</div>
+      <div class="lang-bar-wrap"><div class="lang-bar" style="width:60%;background:#a97bff"></div></div>
+      <div class="lang-pop" style="color:#a97bff">★ Sécurisé</div>
+    </div>
+    <div class="lang-card" style="--lang-color: #3178c620; border-color: #3178c630">
+      <div class="lang-logo">🔷</div>
+      <div class="lang-name">TypeScript</div>
+      <div class="lang-type">Web / Typé</div>
+      <div class="lang-bar-wrap"><div class="lang-bar" style="width:85%;background:#3178c6"></div></div>
+      <div class="lang-pop" style="color:#3178c6">★ En croissance</div>
+    </div>
+    <div class="lang-card" style="--lang-color: #f0513020; border-color: #f0513030">
+      <div class="lang-logo">🎯</div>
+      <div class="lang-name">Swift</div>
+      <div class="lang-type">iOS / macOS</div>
+      <div class="lang-bar-wrap"><div class="lang-bar" style="width:55%;background:#f05130"></div></div>
+      <div class="lang-pop" style="color:#f05130">★ Apple</div>
+    </div>
+    <div class="lang-card" style="--lang-color: #00f5a020; border-color: #00f5a030">
+      <div class="lang-logo">🗃️</div>
+      <div class="lang-name">SQL</div>
+      <div class="lang-type">Base de données</div>
+      <div class="lang-bar-wrap"><div class="lang-bar" style="width:75%;background:#00f5a0"></div></div>
+      <div class="lang-pop" style="color:#00f5a0">★ Indispensable</div>
+    </div>
+  </div>
+</section>
+
+<!-- METIERS -->
+<section id="metiers">
+  <div class="section-tag">// 03 — métiers</div>
+  <h2 class="section-title">Les métiers<br>de l'IT</h2>
+  <p class="section-sub">Des carrières variées avec des salaires attractifs et une forte demande mondiale.</p>
+  <div class="metiers-list">
+    <div class="metier-item">
+      <div class="metier-num">01</div>
+      <div>
+        <div class="metier-name">Développeur Full-Stack</div>
+        <div class="metier-desc">Conçoit et développe à la fois le frontend (interface) et le backend (serveur) d'une application web.</div>
+      </div>
+      <div class="metier-salary">
+        <div class="salary-num">45–75k€</div>
+        <div class="salary-label">par an</div>
+      </div>
+    </div>
+    <div class="metier-item">
+      <div class="metier-num">02</div>
+      <div>
+        <div class="metier-name">Data Scientist</div>
+        <div class="metier-desc">Analyse des données massives pour en extraire des insights et construire des modèles prédictifs.</div>
+      </div>
+      <div class="metier-salary">
+        <div class="salary-num">50–80k€</div>
+        <div class="salary-label">par an</div>
+      </div>
+    </div>
+    <div class="metier-item">
+      <div class="metier-num">03</div>
+      <div>
+        <div class="metier-name">Ingénieur DevOps</div>
+        <div class="metier-desc">Automatise et optimise les pipelines de déploiement, gère l'infrastructure cloud et assure la disponibilité.</div>
+      </div>
+      <div class="metier-salary">
+        <div class="salary-num">55–85k€</div>
+        <div class="salary-label">par an</div>
+      </div>
+    </div>
+    <div class="metier-item">
+      <div class="metier-num">04</div>
+      <div>
+        <div class="metier-name">Expert Cybersécurité</div>
+        <div class="metier-desc">Protège les systèmes contre les cyberattaques, réalise des audits de sécurité et des tests d'intrusion.</div>
+      </div>
+      <div class="metier-salary">
+        <div class="salary-num">55–90k€</div>
+        <div class="salary-label">par an</div>
+      </div>
+    </div>
+    <div class="metier-item">
+      <div class="metier-num">05</div>
+      <div>
+        <div class="metier-name">Ingénieur IA / ML</div>
+        <div class="metier-desc">Conçoit et entraîne des modèles de machine learning et d'intelligence artificielle pour des applications réelles.</div>
+      </div>
+      <div class="metier-salary">
+        <div class="salary-num">60–100k€</div>
+        <div class="salary-label">par an</div>
+      </div>
+    </div>
+    <div class="metier-item">
+      <div class="metier-num">06</div>
+      <div>
+        <div class="metier-name">Architecte Cloud</div>
+        <div class="metier-desc">Conçoit et supervise l'infrastructure cloud d'une organisation, choix des services et optimisation des coûts.</div>
+      </div>
+      <div class="metier-salary">
+        <div class="salary-num">65–110k€</div>
+        <div class="salary-label">par an</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONCEPTS -->
+<section id="concepts">
+  <div class="section-tag">// 04 — concepts</div>
+  <h2 class="section-title">Concepts<br>fondamentaux</h2>
+  <p class="section-sub">Les notions clés que tout informaticien doit maîtriser.</p>
+  <div class="concepts-grid">
+    <div class="concept-card large">
+      <div class="concept-icon">⚙️</div>
+      <h3>Algorithmes & Structures de données</h3>
+      <p>Un algorithme est une suite d'instructions pour résoudre un problème. Les structures de données (tableaux, listes, arbres, graphes) organisent les données efficacement. La complexité algorithmique (O(n), O(log n)...) mesure l'efficacité d'un algorithme en temps et en mémoire.</p>
+      <div class="concept-tags">
+        <span class="tag">Tri</span>
+        <span class="tag">Recherche</span>
+        <span class="tag">Récursion</span>
+        <span class="tag">Graphes</span>
+        <span class="tag">Arbres</span>
+      </div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">🔄</div>
+      <h3>POO — Orienté Objet</h3>
+      <p>Paradigme basé sur des objets qui encapsulent données et comportements. Piliers : héritage, polymorphisme, encapsulation, abstraction.</p>
+      <div class="concept-tags">
+        <span class="tag">Classes</span>
+        <span class="tag">Héritage</span>
+        <span class="tag">Design Patterns</span>
+      </div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">🌐</div>
+      <h3>Réseaux & Internet</h3>
+      <p>TCP/IP, HTTP/HTTPS, DNS, protocoles de communication. Comment les données voyagent d'un point A à un point B à travers le monde.</p>
+      <div class="concept-tags">
+        <span class="tag">TCP/IP</span>
+        <span class="tag">HTTP</span>
+        <span class="tag">REST API</span>
+      </div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">🗄️</div>
+      <h3>Bases de données</h3>
+      <p>SQL pour les données relationnelles, NoSQL pour les données non structurées. ACID, transactions, indexation, optimisation de requêtes.</p>
+      <div class="concept-tags">
+        <span class="tag">SQL</span>
+        <span class="tag">NoSQL</span>
+        <span class="tag">ACID</span>
+      </div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">🔒</div>
+      <h3>Cryptographie</h3>
+      <p>Chiffrement symétrique (AES), asymétrique (RSA), hachage (SHA). Fondement de toute la sécurité informatique moderne.</p>
+      <div class="concept-tags">
+        <span class="tag">AES</span>
+        <span class="tag">RSA</span>
+        <span class="tag">Hash</span>
+      </div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">🧵</div>
+      <h3>Concurrence & Parallélisme</h3>
+      <p>Threads, processus, async/await, coroutines. Exécuter plusieurs tâches simultanément pour maximiser les performances.</p>
+      <div class="concept-tags">
+        <span class="tag">Threads</span>
+        <span class="tag">Async</span>
+        <span class="tag">Mutex</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUTILS -->
+<section id="outils">
+  <div class="section-tag">// 05 — outils</div>
+  <h2 class="section-title">Outils<br>essentiels</h2>
+  <p class="section-sub">Les outils indispensables dans le quotidien d'un développeur moderne.</p>
+  <div class="outils-grid">
+    <div class="outil-card">
+      <div class="outil-icon">💻</div>
+      <div class="outil-name">VS Code</div>
+      <div class="outil-cat">Éditeur</div>
+    </div>
+    <div class="outil-card">
+      <div class="outil-icon">🐙</div>
+      <div class="outil-name">Git / GitHub</div>
+      <div class="outil-cat">Versioning</div>
+    </div>
+    <div class="outil-card">
+      <div class="outil-icon">🐳</div>
+      <div class="outil-name">Docker</div>
+      <div class="outil-cat">Container</div>
+    </div>
+    <div class="outil-card">
+      <div class="outil-icon">☸️</div>
+      <div class="outil-name">Kubernetes</div>
+      <div class="outil-cat">Orchestration</div>
+    </div>
+    <div class="outil-card">
+      <div class="outil-icon">🔧</div>
+      <div class="outil-name">Linux / Bash</div>
+      <div class="outil-cat">OS / Terminal</div>
+    </div>
+    <div class="outil-card">
+      <div class="outil-icon">📮</div>
+      <div class="outil-name">Postman</div>
+      <div class="outil-cat">API Testing</div>
+    </div>
+    <div class="outil-card">
+      <div class="outil-icon">⚡</div>
+      <div class="outil-name">Figma</div>
+      <div class="outil-cat">Design / UI</div>
+    </div>
+    <div class="outil-card">
+      <div class="outil-icon">📊</div>
+      <div class="outil-name">Jupyter</div>
+      <div class="outil-cat">Data / IA</div>
+    </div>
+    <div class="outil-card">
+      <div class="outil-icon">🚀</div>
+      <div class="outil-name">CI/CD</div>
+      <div class="outil-cat">Déploiement</div>
+    </div>
+    <div class="outil-card">
+      <div class="outil-icon">🗃️</div>
+      <div class="outil-name">MySQL</div>
+      <div class="outil-cat">Base de données</div>
+    </div>
+    <div class="outil-card">
+      <div class="outil-icon">🔴</div>
+      <div class="outil-name">Redis</div>
+      <div class="outil-cat">Cache / NoSQL</div>
+    </div>
+    <div class="outil-card">
+      <div class="outil-icon">📦</div>
+      <div class="outil-name">npm / pip</div>
+      <div class="outil-cat">Packages</div>
+    </div>
+  </div>
+</section>
+
+<!-- HISTOIRE -->
+<section id="histoire">
+  <div class="section-tag">// 06 — histoire</div>
+  <h2 class="section-title">Histoire de<br>l'informatique</h2>
+  <p class="section-sub">Des grandes étapes qui ont façonné le monde numérique tel qu'on le connaît aujourd'hui.</p>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">1936</div>
+      <div class="timeline-title">La machine de Turing</div>
+      <div class="timeline-text">Alan Turing définit les bases théoriques de l'informatique moderne avec sa machine universelle, posant les fondements de la calculabilité.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">1969</div>
+      <div class="timeline-title">ARPANET — L'ancêtre d'Internet</div>
+      <div class="timeline-text">Le Département de la Défense américain crée ARPANET, le premier réseau de communication décentralisé, précurseur direct d'Internet.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">1971</div>
+      <div class="timeline-title">Premier microprocesseur — Intel 4004</div>
+      <div class="timeline-text">Intel lance le premier microprocesseur commercial. La miniaturisation du calcul devient possible, ouvrant l'ère des ordinateurs personnels.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">1991</div>
+      <div class="timeline-title">Le World Wide Web</div>
+      <div class="timeline-text">Tim Berners-Lee invente le Web au CERN. HTML, HTTP et les URLs transforment Internet en un espace accessible à tous.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2007</div>
+      <div class="timeline-title">L'iPhone révolutionne le mobile</div>
+      <div class="timeline-text">Apple lance l'iPhone, redéfinissant l'expérience mobile et lançant l'ère des smartphones et des applications mobiles.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2012</div>
+      <div class="timeline-title">Deep Learning — ImageNet</div>
+      <div class="timeline-text">AlexNet remporte ImageNet avec un réseau de neurones profond, marquant le début de la révolution du deep learning et de l'IA moderne.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2022</div>
+      <div class="timeline-title">L'ère des LLMs — ChatGPT</div>
+      <div class="timeline-text">OpenAI lance ChatGPT, rendant les grands modèles de langage accessibles au grand public et déclenchant une révolution de l'IA générative.</div>
+    </div>
+  </div>
+</section>
+
+<!-- GLOSSAIRE -->
+<section id="glossaire">
+  <div class="section-tag">// 07 — glossaire</div>
+  <h2 class="section-title">Glossaire<br>essentiel</h2>
+  <p class="section-sub">Les termes incontournables à connaître quand on parle informatique.</p>
+  <div class="glossaire-grid">
+    <div class="glossaire-item">
+      <div class="glossaire-term">API</div>
+      <div class="glossaire-def">Interface de programmation qui permet à deux applications de communiquer entre elles via des requêtes standardisées (REST, GraphQL...).</div>
+    </div>
+    <div class="glossaire-item">
+      <div class="glossaire-term">Cloud</div>
+      <div class="glossaire-def">Infrastructure informatique distante accessible via Internet. Permet de stocker, traiter et déployer sans posséder de matériel physique.</div>
+    </div>
+    <div class="glossaire-item">
+      <div class="glossaire-term">DevOps</div>
+      <div class="glossaire-def">Culture et pratiques qui unissent développement et opérations pour accélérer et fiabiliser les cycles de livraison logicielle.</div>
+    </div>
+    <div class="glossaire-item">
+      <div class="glossaire-term">Framework</div>
+      <div class="glossaire-def">Ensemble d'outils et de conventions qui structurent le développement d'une application (React, Django, Spring...).</div>
+    </div>
+    <div class="glossaire-item">
+      <div class="glossaire-term">Git</div>
+      <div class="glossaire-def">Système de contrôle de version distribué qui trace l'historique du code et facilite la collaboration entre développeurs.</div>
+    </div>
+    <div class="glossaire-item">
+      <div class="glossaire-term">Container</div>
+      <div class="glossaire-def">Unité logicielle légère qui emballe le code et ses dépendances pour s'exécuter de manière uniforme sur n'importe quel environnement (Docker).</div>
+    </div>
+    <div class="glossaire-item">
+      <div class="glossaire-term">Machine Learning</div>
+      <div class="glossaire-def">Sous-domaine de l'IA où les algorithmes apprennent automatiquement à partir des données sans être explicitement programmés.</div>
+    </div>
+    <div class="glossaire-item">
+      <div class="glossaire-term">Open Source</div>
+      <div class="glossaire-def">Logiciel dont le code source est public, librement utilisable, modifiable et distribuable par n'importe qui.</div>
+    </div>
+    <div class="glossaire-item">
+      <div class="glossaire-term">Scalabilité</div>
+      <div class="glossaire-def">Capacité d'un système à gérer une charge croissante en ajoutant des ressources (horizontalement ou verticalement).</div>
+    </div>
+    <div class="glossaire-item">
+      <div class="glossaire-term">Microservices</div>
+      <div class="glossaire-def">Architecture où une application est divisée en petits services indépendants communicant via des APIs, opposé au monolithe.</div>
+    </div>
+    <div class="glossaire-item">
+      <div class="glossaire-term">Agile / Scrum</div>
+      <div class="glossaire-def">Méthode de gestion de projet itérative en sprints courts (2 semaines), favorisant l'adaptation et la livraison continue.</div>
+    </div>
+    <div class="glossaire-item">
+      <div class="glossaire-term">CI/CD</div>
+      <div class="glossaire-def">Intégration et déploiement continus — automatiser les tests et le déploiement du code à chaque modification pour livrer plus vite.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">TECHVERSE</div>
+  <div class="footer-text">© 2024 — Le monde de l'informatique en un seul endroit</div>
+  <div class="footer-text">Made with 💚 & HTML/CSS/JS</div>
+</footer>
+
+<script>
+  // Smooth nav highlight
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav ul a');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      if (window.scrollY >= section.offsetTop - 200) {
+        current = section.getAttribute('id');
+      }
+    });
+    navLinks.forEach(link => {
+      link.style.color = link.getAttribute('href') === `#${current}` ? 'var(--accent)' : '';
+    });
+  });
+
+  // Animate on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.domaine-card, .lang-card, .concept-card, .outil-card, .glossaire-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
